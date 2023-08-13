@@ -5,6 +5,8 @@ import com.sampleblog.sampleblogproject.exception.ResourceNotFoundExtension;
 import com.sampleblog.sampleblogproject.payload.PostDto;
 import com.sampleblog.sampleblogproject.repository.PostRepository;
 import com.sampleblog.sampleblogproject.service.PostService;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.Banner;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,11 @@ public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
 
-    private Post post;
+    private ModelMapper mapper;
 
-
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -79,21 +81,26 @@ public class PostServiceImpl implements PostService {
     // create private method with common code
 
     private PostDto mapToDto(Post post){
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setDescription(post.getDescription());
-        postDto.setTitle(post.getTitle());
-        postDto.setContent(post.getContent());
+        PostDto postDto = mapper.map(post, PostDto.class);
+
+
+//        PostDto postDto = new PostDto();
+//        postDto.setId(post.getId());
+//        postDto.setDescription(post.getDescription());
+//        postDto.setTitle(post.getTitle());
+//        postDto.setContent(post.getContent());
         return postDto;
     }
 
     // converted DTO to entity
 
     private Post mapToEntity(PostDto postDto){
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
+        Post post = mapper.map(postDto, Post.class);
+
+//        Post post = new Post();
+//        post.setTitle(postDto.getTitle());
+//        post.setDescription(postDto.getDescription());
+//        post.setContent(postDto.getContent());
         return post;
     }
 
