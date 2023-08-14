@@ -1,10 +1,12 @@
 package com.sampleblog.sampleblogproject.service.impl;
 
 import com.sampleblog.sampleblogproject.entity.Post;
+import com.sampleblog.sampleblogproject.exception.PostNotFoundException;
 import com.sampleblog.sampleblogproject.exception.ResourceNotFoundExtension;
 import com.sampleblog.sampleblogproject.payload.PostDto;
 import com.sampleblog.sampleblogproject.repository.PostRepository;
 import com.sampleblog.sampleblogproject.service.PostService;
+import org.hibernate.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.Banner;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
@@ -51,7 +53,8 @@ public class PostServiceImpl implements PostService {
     }
 
     public Optional<Post> getPostById(long id) {
-        return postRepository.findById(id);
+        return Optional.ofNullable(postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException("post with id" + id + "not found")));
     }
 
     @Override
