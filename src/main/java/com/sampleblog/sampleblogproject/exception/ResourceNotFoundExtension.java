@@ -9,11 +9,11 @@ public class ResourceNotFoundExtension extends RuntimeException{
     private String fieldName;
     private String fieldValue;
 
-    public ResourceNotFoundExtension(String resourceName, String fieldName, String fieldValue) {
+    public ResourceNotFoundExtension(String resourceName, String fieldName, Long fieldValue) {
         super(String.format("%s not found with %s: '%s", resourceName, fieldName, fieldValue));
         this.resourceName = resourceName;
         this.fieldName = fieldName;
-        this.fieldValue = fieldValue;
+       // this.fieldValue = fieldValue;
     }
 
     public String getResourceName() {
