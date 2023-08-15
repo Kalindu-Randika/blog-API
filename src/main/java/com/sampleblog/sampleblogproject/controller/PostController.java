@@ -3,6 +3,7 @@ package com.sampleblog.sampleblogproject.controller;
 import com.sampleblog.sampleblogproject.entity.Post;
 import com.sampleblog.sampleblogproject.payload.PostDto;
 import com.sampleblog.sampleblogproject.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ public class PostController {
 
     // create blog post Rest API endpoint
 
-    @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
+    @PostMapping("/posts")
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
