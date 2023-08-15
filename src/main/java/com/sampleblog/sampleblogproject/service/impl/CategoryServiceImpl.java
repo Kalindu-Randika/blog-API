@@ -10,11 +10,14 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
     private CategoryRepository categoryRepository;
+    private Category category;
     private ModelMapper modelMapper;
 
     public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper) {
@@ -39,7 +42,27 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getAllCategories() {
-       List<Category> categories = categoryRepository.findAll();
-        return (List<CategoryDto>) categories.stream().map((category -> modelMapper.map(category, CategoryDto.class)));
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map(category -> modelMapper.map(category, CategoryDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CategoryDto updateCategory(CategoryDto categoryDto, Long categoryId) throws ChangeSetPersister.NotFoundException {
+       Category category = categoryRepository.findById(categoryId).
+               orElseThrow(ChangeSetPersister.NotFoundException::new);;
+
+               category.setName(categoryDto.getName());
+               category.setDescription(categoryDto.getDescription());
+               category.setId(categoryId);
+
+            Category updatedCategory = categoryRepository.save(category);
+
+            return modelMapper.map(updatedCategory, CategoryDto.class);
+
+
+
+
     }
 }

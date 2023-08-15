@@ -1,9 +1,11 @@
 package com.sampleblog.sampleblogproject.service.impl;
 
+import com.sampleblog.sampleblogproject.entity.Category;
 import com.sampleblog.sampleblogproject.entity.Post;
 import com.sampleblog.sampleblogproject.exception.PostNotFoundException;
 import com.sampleblog.sampleblogproject.exception.ResourceNotFoundExtension;
 import com.sampleblog.sampleblogproject.payload.PostDto;
+import com.sampleblog.sampleblogproject.repository.CategoryRepository;
 import com.sampleblog.sampleblogproject.repository.PostRepository;
 import com.sampleblog.sampleblogproject.service.PostService;
 import org.hibernate.ObjectNotFoundException;
@@ -22,15 +24,21 @@ public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
 
+    private CategoryRepository categoryRepository;
+
     private ModelMapper mapper;
 
-    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
+    public PostServiceImpl(PostRepository postRepository, CategoryRepository categoryRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
+        this.categoryRepository = categoryRepository;
         this.mapper = mapper;
     }
 
     @Override
     public PostDto createPost(PostDto postDto) {
+
+      Category category = categoryRepository.findById(postDto.getCategoryId())
+                .orElseThrow(()-> new ResourceNotFoundExtension("Category", "id", postDto.getCategoryId()));
 
         // Convert DTO to Entity
 
@@ -40,6 +48,7 @@ public class PostServiceImpl implements PostService {
 //        post.setContent(postDto.getContent());
 
         Post post = mapToEntity(postDto);
+        post.setCategory(category);
 
         Post newPost = postRepository.save(post);
 

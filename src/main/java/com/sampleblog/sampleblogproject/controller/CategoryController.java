@@ -1,5 +1,6 @@
 package com.sampleblog.sampleblogproject.controller;
 
+import com.sampleblog.sampleblogproject.entity.Category;
 import com.sampleblog.sampleblogproject.payload.CategoryDto;
 import com.sampleblog.sampleblogproject.service.CategoryService;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -34,8 +35,16 @@ public class CategoryController {
         return ResponseEntity.ok(categoryDto);
     }
 
+    //Build get all categories rest API
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getCategories(){
         return ResponseEntity.ok(categoryService.getAllCategories());
+    }
+
+    //Build update category rest API
+
+    @PutMapping("{categoryId}")
+    public ResponseEntity<CategoryDto> updatedCategory(@RequestBody CategoryDto categoryDto,@PathVariable Long categoryId) throws ChangeSetPersister.NotFoundException {
+        return ResponseEntity.ok(categoryService.updateCategory(categoryDto, categoryId));
     }
 }

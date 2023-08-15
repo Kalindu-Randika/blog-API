@@ -11,4 +11,6 @@ public interface CategoryService {
     CategoryDto getCategory(Long categoryId) throws ChangeSetPersister.NotFoundException;
 
     List<CategoryDto> getAllCategories();
+
+    CategoryDto updateCategory(CategoryDto categoryDto, Long categoryId) throws ChangeSetPersister.NotFoundException;
 }
