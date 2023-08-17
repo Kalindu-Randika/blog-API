@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +35,7 @@ import org.springframework.context.annotation.Bean;
 
 
 
-public class SampleBlogProjectApplication {
+public class SampleBlogProjectApplication implements CommandLineRunner {
 
 	@Bean
 	public ModelMapper modelMapper(){
@@ -45,4 +46,10 @@ public class SampleBlogProjectApplication {
 		SpringApplication.run(SampleBlogProjectApplication.class, args);
 	}
 
+
+
+	@Override
+	public void run(String... args) throws Exception {
+
+	}
 }
